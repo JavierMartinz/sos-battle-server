@@ -1,17 +1,19 @@
-/**
- * IMPORTANT:
- * ---------
- * Do not manually edit this file if you'd like to host your server on Colyseus Cloud
- *
- * If you're self-hosting (without Colyseus Cloud), you can manually
- * instantiate a Colyseus Server as documented here:
- *
- * See: https://docs.colyseus.io/server/api/#constructor-options
- */
-import { listen } from "@colyseus/tools";
+import { Server } from "@colyseus/core";
+import { BunWebSockets } from "@colyseus/bun-websockets";
+import { MyRoom } from "./rooms/MyRoom";
 
-// Import Colyseus config
-import app from "./app.config";
+const port = Number(process.env.PORT ?? 2567);
+const hostname = process.env.HOST ?? "0.0.0.0";
 
-// Create and listen on 2567 (or PORT environment variable.)
-listen(app);
+const transport = new BunWebSockets({
+  port,
+  hostname,
+});
+
+const gameServer = new Server({
+  transport,
+});
+
+gameServer.define("sos_room", MyRoom);
+
+console.log(`Colyseus (Bun) listening on http://${hostname}:${port}`);
