@@ -16,4 +16,6 @@ const gameServer = new Server({
 
 gameServer.define("sos_room", MyRoom);
 
+gameServer.listen(port, hostname);
+
 console.log(`Colyseus (Bun) listening on http://${hostname}:${port}`);
